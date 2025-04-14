@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PassVault - Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="/static/logo.png" alt="PassVault">
+        </div>
+        <div class="site-title">
+            <span>Pass</span>Vault
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="dashboard-header">
+                <h1>Welcome, {{ request.user.username }}</h1>
+                <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+            </div>
+            <div class="dashboard-actions">
+                <h2>Your Passwords</h2>
+                <a href="{% url 'add' %}" class="add-btn">Add New Entry</a>
+            </div>
+        
+            <table>
+                <thead>
+                    <tr>
+                        <th>Website</th>
+                        <th>Password</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in entries %}
+                    <tr>
+                        <td>{{ entry.website }}</td>
+                        <td>{{ entry.get_password }}</td>
+                        <td>
+                            <form action="{% url 'update' entry.id %}" method="get" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="action-button update-button">Update</button>
+                            </form>
+                            <form action="{% url 'delete' entry.id %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="action-button delete-button">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

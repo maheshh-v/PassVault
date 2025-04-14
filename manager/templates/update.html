@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PassVault - Update Entry</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="/static/logo.png" alt="PassVault">
+        </div>
+        <div class="site-title">
+            <span>Pass</span>Vault
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h1>Update Password</h1>
+            <p class="subtitle">Edit your stored password details</p>
+            
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="error">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit">Update Password</button>
+            </form>
+            <p><a href="{% url 'dashboard' %}">Back to Dashboard</a></p>
+        </div>
+    </div>
+</body>
+</html>
